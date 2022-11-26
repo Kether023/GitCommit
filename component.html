@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/codemirror.css' rel='stylesheet'>
+  <script src="https://cdn.tiny.cloud/1/2o1jhm4vn2v64bbjg85xonddnacxddk10y2c1ynn5fb15pty/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/codemirror.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/mode/htmlmixed/htmlmixed.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/mode/javascript/javascript.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/mode/xml/xml.js'></script>
+  <style>
+    body {
+  font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;
+  background-color: #fafcff;
+  margin: 0;
+}
+
+img {
+  margin: 18px 0px;
+}
+
+.HTMLContainer {
+  width: 100%;
+  min-height: 300px;
+  border: dashed 2px #d8e3fa;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+}
+.submitbtn {
+    padding:10px 50px; 
+    background:rgb(68, 179, 73); 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 10px;
+    border-radius: 25px; 
+    margin-top: 2,5%;
+}
+  </style>
+</head>
+<body>
+  <div style="background-color: #FFF; max-width: 800px; margin: auto; padding: 20px;">
+    <img width="225" src="https://sun9-west.userapi.com/sun9-54/s/v1/ig2/TSksnod08BxTn9qiKMbgnIeP07rzx4iromvXgNWY9Xo_f5omn3SGBM4AolRb99U5XSStreR21grEgY7exqiE1e3F.jpg?size=458x193&quality=96&type=album" align="right">
+    <h1>HTML редактор</h1>
+    <h2>Добро пожаловать!</h2>
+    <p>Используйте этот редактор как пожелаете.</p>
+    <form action="/submit" method="post"><textarea type ="mdtext" id="mytextarea">
+
+    </textarea>
+    <h2>HTML вывод</h2>
+    <div type ="htmltext" class="HTMLContainer"></div>
+    <p><b>Git токен:</b><br>
+    <input type = "token" size="40">
+    <div>
+    <input type = "submit" class="submitbtn" value="Подтвердить"></form>
+    </div>
+    <h2>Редактируйте свой HTML вместе с нами.</h2>
+    <br>
+    <center><a href="https://tpykt.ru/"><img width="150" src="https://sun9-west.userapi.com/sun9-54/s/v1/ig2/TSksnod08BxTn9qiKMbgnIeP07rzx4iromvXgNWY9Xo_f5omn3SGBM4AolRb99U5XSStreR21grEgY7exqiE1e3F.jpg?size=458x193&quality=96&type=album"></a></center>
+  </div>
+  <script>
+    tinymce.init({
+  selector: "#mytextarea",
+  height: 400,
+  plugins: [
+    "advlist autolink advcode lists link image charmap print preview anchor",
+    "searchreplace visualblocks code fullscreen",
+    "insertdatetime media table paste emoticons", 
+  ],
+  toolbar:
+    "styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | code ",
+    menubar: "file edit view insert format tools table help",
+  setup: function (editor) {
+    editor.on("keyup", function (e) {
+      updateHTML(editor.getContent());
+    });
+    editor.on("change", function (e) {
+      updateHTML(editor.getContent());
+    });
+  }
+});
+
+function updateHTML(content) {
+  cmeditor.getDoc().setValue(content);
+}
+
+function updateEditor() {
+  if (!tinymce.activeEditor.hasFocus()) {
+    tinymce.activeEditor.setContent(cmeditor.getDoc().getValue());
+  }
+}
+
+var HTMLContainer = document.querySelector(".HTMLContainer");
+
+var cmeditor = CodeMirror(HTMLContainer, {
+  lineNumbers: true,
+  mode: "htmlmixed"
+});
+
+cmeditor.on("change", (editor) => {
+  updateEditor();
+});
+
+function ajaxLoad() {
+    var ed = tinyMCE.get('content');
+
+    // Do you ajax call here, window.setTimeout fakes ajax call
+    ed.setProgressState(1); // Show progress
+    window.setTimeout(function() {
+        ed.setProgressState(0); // Hide progress
+        ed.setContent('HTML content that got passed from server.');
+    }, 3000);
+}
+
+function ajaxSave() {
+    var ed = tinyMCE.get('content');
+
+    // Do you ajax call here, window.setTimeout fakes ajax call
+    ed.setProgressState(1); // Show progress
+    window.setTimeout(function() {
+        ed.setProgressState(0); // Hide progress
+        alert(ed.getContent());
+    }, 3000);
+}
+</script>
+</body>
+</html>
